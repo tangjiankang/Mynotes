@@ -4,7 +4,7 @@ When@@SESSION.GTID_NEXT is set to a GTID, you must explicitly set it to a differ
 故障可能原因:<br>
 1. enforce_gtid_consistency为OFF，主库执行create table as select * from xx;
 2. myisam引擎表，主库执行insert delayed into xx values...
-3. 主从引擎不一致，主库innodb引擎一个事务中写入两条数据，传到从库的myisam引擎执行这个事务 
+3. 主从引擎不一致，主库innodb引擎一个事务中写入两条数据，传到从库的myisam引擎执行这个事务.<br> 
 原因分析:<br>
 根本原因是每一个GTID需要与一个唯一的事务对应<br>
 针对原因1，create table as select * from xx会自动转换成row模式，这时会拆成crate table和insert两个事务，这时传到slave时，slave执行完crate以后，多出一个insert事务没有gtid，于是报错；<br>
