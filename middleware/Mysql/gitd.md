@@ -1,4 +1,4 @@
-## Gtid功能的增强
+### Gtid功能的增强
 在MySQL5.7中对Gtid做了一些增强，现在进行一些说明。<br>
 GTID即全局事务ID（global transaction identifier），GTID实际上是由UUID+TID（Sequence Number）组成的。<br>
 其中UUID是一个MySQL实例的唯一标识。TID代表了该实例上已经提交的事务数量，并且随着事务提交单调递增，所以GTID能够保证每个MySQL实例事务的执行（不会重复执行同一个事务，并且会补全没有执行的事务）。<br>
@@ -8,12 +8,17 @@ GTID的目的是简化复制的使用过程和降低复制集群维护的难度�
 CHANGE MASTER TO MASTER_LOG_FILE=‘Master-bin.000010’, MASTER_LOG_POS=‘214’;<br>
 简化成：<br>
 CHANGE MASTER TO MASTER_AUTO_POSITION=1;<br>
-## MASTER_AUTO_POSITION的原理：
-MySQL Server记录了所有已经执行了的事务的GTID，包括复制过来的（可以通过select @@global.gtid_executed查看）。
-Slave记录了所有从Master接收过来的事务的GTID（可以通过Retrieve_gtid_set查看）。
+### MASTER_AUTO_POSITION的原理：
+MySQL Server记录了所有已经执行了的事务的GTID，包括复制过来的（可以通过select @@global.gtid_executed查看）。<br>
+Slave记录了所有从Master接收过来的事务的GTID（可以通过Retrieve_gtid_set查看）。<br>
 Slave连接到Master时，会把gtid_executed中的gtid发给Master，Master会自动跳过这些事务，只将没有复制的事务发送到Slave去。
-## 上面介绍的是GTID的基本概念，GTID相关变量：
-binlog_gtid_simple_recovery ：MySQL5.7.7之后默认on，这个参数控制了当mysql启动或重启时，mysql在搜寻GTIDs时是如何迭代使用binlog文件。该参数为真时，mysql-server只需打开最老的和最新的这2个binlog文件，gtid_purged参数的值和gtid_executed参数的值可以根据这些文件中的Previous_gtids_log_event或者Gtid_log_event计算得出。这确保了当mysql-server重启或清理binlog时，只需打开2个binlog文件。当这个参数设置为off，在mysql恢复期间，为了初始化gtid_executed，所有以最新文件开始的binlog都要被检查。并且为了初始化gtid_purged，所有的binlog都要被检查。这可能需要非常长的时间，建议开启。注意：MySQL5.6中，默认为off，调整这个选项设置也同样会提升性能，但是在一些特殊场景下，计算gtids值可能会出错。而保持这个选项值为off，能确保计算总是正确。
+### 上面介绍的是GTID的基本概念，GTID相关变量：
+binlog_gtid_simple_recovery ：MySQL5.7.7之后默认on，这个参数控制了当mysql启动或重启时，mysql在搜寻GTIDs时是如何迭代使用binlog文件。<br>
+该参数为真时，mysql-server只需打开最老的和最新的这2个binlog文件，gtid_purged参数的值和gtid_executed参数的值可以根据这些文件中的Previous_gtids_log_event或者Gtid_log_event计算得出。<br>
+这确保了当mysql-server重启或清理binlog时，只需打开2个binlog文件。<br>
+当这个参数设置为off，在mysql恢复期间，为了初始化gtid_executed，所有以最新文件开始的binlog都要被检查。<br>
+并且为了初始化gtid_purged，所有的binlog都要被检查。这可能需要非常长的时间，建议开启。<br>
+注意：MySQL5.6中，默认为off，调整这个选项设置也同样会提升性能，但是在一些特殊场景下，计算gtids值可能会出错。而保持这个选项值为off，能确保计算总是正确。
 * enforce_gtid_consistency：默认off，可选值有on和warn。根据该变量的值，服务器只允许可以安全使用GTID记录的语句通过，强制GTID一致性。在启用基于GTID复制之前将此变量需要设置为on。
 * OFF  ：不检测是否有GTID不支持的语句和事务。Warn ：当检测到不支持GTID的语句和事务，返回警告，并在日志中记录。
 * ON   ：当检测到不支持GTID的语句和事务，返回错误。
