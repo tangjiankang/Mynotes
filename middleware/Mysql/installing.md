@@ -53,18 +53,19 @@ mysqld --initialize --user=mysql --datadir=/data/mysql
 因为Ubuntu有个AppArmor，是一个Linux系统安全应用程序，类似于Selinux,AppArmor默认安全策略定义个别应用程序可以访问系统资源和各自的特权，如果不设置服务的执行程序，即使你改了属主属组并0777权限，也是对服务起不到作用。
 
 ok，apt安装下MySQL默认数据目录是/var/lib/mysql，其它的目录权限都不可。开始修改：
-1	# vim /etc/apparmor.d/usr.sbin.mysqld
+```
+# vim /etc/apparmor.d/usr.sbin.mysqld
 找到：
-1	# Allow data dir access
-2	  /var/lib/mysql/ r,
-3	  /var/lib/mysql/** rwk,
+# Allow data dir access
+/var/lib/mysql/ r,
+/var/lib/mysql/** rwk,
 修改为：
-1	# Allow data dir access
-2	  /data/mysql/ r,
-3	  /data/mysql/** rwk,
+# Allow data dir access
+/data/mysql/ r,
+/data/mysql/** rwk,
 重启apparmor服务：
-1	# service apparmor restart
-
+service apparmor restart
+```
 重新初始化，启动成功。
 
 对于Mysql 5.7.6以后的5.7系列版本，Mysql使用mysqld --initialize或mysqld --initialize-insecure命令来初始化数据库，后者可以不生成随机密码。但是安装Mysql时默认使用的是前一个命令，这个命令也会生成一个随机密码。改密码保存在了Mysql的日志文件中。
