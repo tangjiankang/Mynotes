@@ -45,17 +45,20 @@ mysql> set global gtid_mode=ON;ERROR 3111 (HY000): SET @@GLOBAL.GTID_MODE = ON i
 mysql> set global enforce_gtid_consistency=on;Query OK, 0 rows affected (0.00 sec)
 mysql> set global gtid_mode=ON;Query OK, 0 rows affected (0.16 sec)
 ```
-在线开启GTID的步骤：不是直接设置gtid_mode为on，需要先设置成OFF_PERMISSIVE，再设置成ON_PERMISSIVE，再把enforce_gtid_consistency设置成ON，最后再将gtid_mode设置成on，如上面所示。若保证GTID重启服务器继续有效，则需要再配置文件里添加：
-gtid-mode=onenforce-gtid-consistency=on
-在线启用GTID功能的好处：不需要重启数据库，配置过程在线，整个复制集群仍然对外提供读和写的服务；不需要改变复制拓扑结构；可以在任何结构的复制集群中在线启用GTID功能。
-②：存储GTID信息到表中，slave不需要再开启log_bin和log_slave_updates。表存在在mysql.gtid_executed，MySQL5.6上GTID只能存储在binlog中，所以必须开启Binlog才能使用GTID功能。
-如何记录GTID到表中？这里有2种情况：
-1）如果开启了binlog，在切换binlog时将当前binlog的所有GTID插入gtid_executed表中。插入操作等价于一个或多个INSERT语句。
+在线开启GTID的步骤：不是直接设置gtid_mode为on，需要先设置成OFF_PERMISSIVE，再设置成ON_PERMISSIVE，再把enforce_gtid_consistency设置成ON，最后再将gtid_mode设置成on，如上面所示。<br>
+若保证GTID重启服务器继续有效，则需要再配置文件里添加：<br>
+gtid-mode=onenforce-gtid-consistency=on<br>
+在线启用GTID功能的好处：不需要重启数据库，配置过程在线，整个复制集群仍然对外提供读和写的服务；不需要改变复制拓扑结构；可以在任何结构的复制集群中在线启用GTID功能。<br>
+②：存储GTID信息到表中，slave不需要再开启log_bin和log_slave_updates。表存在在mysql.gtid_executed，MySQL5.6上GTID只能存储在binlog中，所以必须开启Binlog才能使用GTID功能。<br>
+如何记录GTID到表中？这里有2种情况：<br>
+- 如果开启了binlog，在切换binlog时将当前binlog的所有GTID插入gtid_executed表中。插入操作等价于一个或多个INSERT语句。
 INSERT INTO mysql.gtid_executed(UUID, 1, 100)
-2）如果没有开启binlog，每个事务在提交之前会执行一个等价的INSERT的操作。 此操作是该事务的一部分，和事务的其他操作整体保持原子性。 需要保证gtid_executed是innodb存储引擎。
-BEGIN;...INSERT INTO mysql.gtid_executed(UUID, 101, 101); COMMIT;
-为什么把GTID记录到表中，原因是什么？
-MySQL5.6中必须配置参数log_slave_updates的最重要原因在于当slave重启后，无法得知当前slave已经运行到的GTID位置，因为变量gtid_executed是一个内存值，所以MySQL 5.6的处理方法就是启动时扫描最后一个二进制日志，获取当前执行到的GTID位置信息。如果不小心将二进制日志删除了，那么这又会带来灾难性的问题。因此MySQL5.7将gtid_executed这个值给持久化了。因为gtid写表了，表gtid_executed中的记录会增长，所以MySQL 5.7又引入了新的线程，用来对此表进行压缩，通过参数gtid_executed_compression_period用来控制每执行多少个事务，对此表进行压缩，默认值为1000个事务。
+- 如果没有开启binlog，每个事务在提交之前会执行一个等价的INSERT的操作。 此操作是该事务的一部分，和事务的其他操作整体保持原子性。 需要保证gtid_executed是innodb存储引擎。
+BEGIN;...INSERT INTO mysql.gtid_executed(UUID, 101, 101); COMMIT;<br>
+为什么把GTID记录到表中，原因是什么？<br>
+MySQL5.6中必须配置参数log_slave_updates的最重要原因在于当slave重启后，无法得知当前slave已经运行到的GTID位置，因为变量gtid_executed是一个内存值，所以MySQL 5.6的处理方法就是启动时扫描最后一个二进制日志，获取当前执行到的GTID位置信息。<br>
+如果不小心将二进制日志删除了，那么这又会带来灾难性的问题。<br>
+因此MySQL5.7将gtid_executed这个值给持久化了。因为gtid写表了，表gtid_executed中的记录会增长，所以MySQL 5.7又引入了新的线程，用来对此表进行压缩，通过参数gtid_executed_compression_period用来控制每执行多少个事务，对此表进行压缩，默认值为1000个事务。<br>
 表（mysql.gtid_executed）压缩前后对比：
 
   压缩前：    
