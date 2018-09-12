@@ -46,14 +46,15 @@ init_connect='SET NAMES utf8'
 skip-name-resolve 
 ```
 QA的配置
+```
 slave复制进程不随mysql启动而启动skip-slave-start
-主：
+#主：
 mysql>grant replication slave, replication client on *.* to 'repl'@'172.16.179.104' identified by 'nH@H29.kEA7';
-从：
+#从：
 mysql>CHANGE MASTER TO MASTER_HOST='172.16.179.102',MASTER_USER='repl',MASTER_PASSWORD='nH@H29.kEA7',MASTER_PORT=3306,MASTER_AUTO_POSITION = 1;
-CHANGE MASTER TO MASTER_HOST='10.26.60.21',MASTER_USER='repl',MASTER_PASSWORD='nH@H29.kEA7',MASTER_PORT=3306,MASTER_LOG_FILE='master-binlog.001814',MASTER_LOG_POS=961360719 MASTER_AUTO_POSITION = 0; 
+     #CHANGE MASTER TO MASTER_HOST='10.26.60.21',MASTER_USER='repl',MASTER_PASSWORD='nH@H29.kEA7',MASTER_PORT=3306,MASTER_LOG_FILE='master-binlog.001814',MASTER_LOG_POS=961360719 MASTER_AUTO_POSITION = 0; 
 mysql> START slave;
-查看slave状态
+#查看slave状态
 mysql> show slave status\G 
-开启GTID时，slave在做同步复制时，无须找到binlog日志和POS点，直接change master to master_auto_position=1即可，自动找点同步。 
-
+#开启GTID时，slave在做同步复制时，无须找到binlog日志和POS点，直接change master to master_auto_position=1即可，自动找点同步。 
+```
