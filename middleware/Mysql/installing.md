@@ -69,7 +69,7 @@ service apparmor restart
 重新初始化，启动成功。
 
 对于Mysql 5.7.6以后的5.7系列版本，Mysql使用mysqld --initialize或mysqld --initialize-insecure命令来初始化数据库，后者可以不生成随机密码。但是安装Mysql时默认使用的是前一个命令，这个命令也会生成一个随机密码。改密码保存在了Mysql的日志文件中。
-
+```
 root@ali-hk-bw-blue-qa-master-01:/data/mysql# cat /var/log/mysql/error.log | grep temporary
 2018-09-03T02:05:18.023335Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
 2018-09-03T02:05:19.778360Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
@@ -82,4 +82,4 @@ root@ali-hk-bw-blue-qa-master-01:/data/mysql# cat /var/log/mysql/error.log | gre
 2018-09-03T03:00:07.033020Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
 2018-09-03T03:02:00.065706Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
 2018-09-03T03:08:56.821179Z 1 [Note] A temporary password is generated for root@localhost: kwplXI.jg6El
-
+```
