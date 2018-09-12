@@ -1,9 +1,13 @@
-#4，Gtid功能的增强
-之前介绍过MySQL5.6 新特性之GTID，GTID的基本概念可以看这篇文章，在MySQL5.7中对Gtid做了一些增强，现在进行一些说明。
-GTID即全局事务ID（global transaction identifier），GTID实际上是由UUID+TID（Sequence Number）组成的。其中UUID是一个MySQL实例的唯一标识。TID代表了该实例上已经提交的事务数量，并且随着事务提交单调递增，所以GTID能够保证每个MySQL实例事务的执行（不会重复执行同一个事务，并且会补全没有执行的事务）。下面是一个GTID的具体形式：
+# Gtid功能的增强
+在MySQL5.7中对Gtid做了一些增强，现在进行一些说明。
+GTID即全局事务ID（global transaction identifier），GTID实际上是由UUID+TID（Sequence Number）组成的。
+其中UUID是一个MySQL实例的唯一标识。TID代表了该实例上已经提交的事务数量，并且随着事务提交单调递增，所以GTID能够保证每个MySQL实例事务的执行（不会重复执行同一个事务，并且会补全没有执行的事务）。
+下面是一个GTID的具体形式：
 4e659069-3cd8-11e5-9a49-001c4270714e:1
 GTID的目的是简化复制的使用过程和降低复制集群维护的难度，不再依赖Master的binlog文件名和文件中的位置。 
-CHANGE MASTER TO MASTER_LOG_FILE=‘Master-bin.000010’, MASTER_LOG_POS=‘214’;简化成：CHANGE MASTER TO MASTER_AUTO_POSITION=1;
+CHANGE MASTER TO MASTER_LOG_FILE=‘Master-bin.000010’, MASTER_LOG_POS=‘214’;
+简化成：
+CHANGE MASTER TO MASTER_AUTO_POSITION=1;
 # MASTER_AUTO_POSITION的原理：
 MySQL Server记录了所有已经执行了的事务的GTID，包括复制过来的（可以通过select @@global.gtid_executed查看）。
 Slave记录了所有从Master接收过来的事务的GTID（可以通过Retrieve_gtid_set查看）。
