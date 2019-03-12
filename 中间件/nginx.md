@@ -1,0 +1,1 @@
+http://nginx.org/en/linux_packages.html#stable
