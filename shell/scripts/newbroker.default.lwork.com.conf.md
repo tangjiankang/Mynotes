@@ -2,6 +2,17 @@
 server {
     listen       80 default;
     server_name _;
+    access_log  /var/log/nginx/broker-prod.access.log  access_json;
+
+    set $ui_url "https://broker-static.oss-cn-hangzhou.aliyuncs.com/prod";
+    set $ui_dir prod;
+
+    if ($geoip2_data_country_code != 'CN') {
+    set $ui_url https://static.lwork.com/prodwai;
+    set $ui_dir prodwai;
+       }
+
+
     set $getui $cookie_feVersion;
 
     if ($getui != "") {
@@ -23,12 +34,12 @@ server {
      set $a 1;
      }
     if ($a = 1) {
-     set $ui_version v6.12.7;
+     set $ui_version v6.12.33;
      }
 
     location ^~ /api/v1/static/
                 {
-        proxy_set_header Host $host;
+        proxy_set_header Host $host; # 就是可设置请求头-并将头信息传递到服务器端。不属于请求头的参数中也需要传递时 重定义下就行啦
         proxy_set_header X-Real-IP $clientRealIp;
         proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
         proxy_connect_timeout   60s;

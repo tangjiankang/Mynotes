@@ -1,4 +1,5 @@
 ### 阿里云香港ubuntu16.04安装k8s 1.11.2 HA版
+## **自动生成的证书只能用一年。**
 # 架构说明
 由于阿里云Ecs无法安装keepalived，我们采用阿里内部loadbalancer做master的负载，阿里内部loadbalancer无法由vpc内部ecs负载到自己机器，所以还需要另外两台服务器安装haproxy负载到三台master
 ```

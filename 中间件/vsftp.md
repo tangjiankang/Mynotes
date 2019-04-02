@@ -147,6 +147,4 @@ userlist_deny=NO
 userlist_file=/etc/vsftpd/user_list
 allow_writeable_chroot=YES
 
-usermod -d /home/vsftp/bthub/ max
-chown max.max bthub
 ```
