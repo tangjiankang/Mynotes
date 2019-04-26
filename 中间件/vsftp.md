@@ -6,23 +6,7 @@ chmod o+w /var/ftp/pub/
 service vsftpd start
 上传.
 #### **系统用户配置**
-匿名模式可以让任何人使用ftp服务，比较公开！多适用于共享文件！如果我们想要特定用户使用，就需要使用系统用户登录访问！这种模式，需要我们新建不同用户，linux创建用户：
-```
-useradd 新的用户名
-passwd 密码
-```
-### **然后需要修改配置文件**
-```
-anonymous_enable=NO   #禁止匿名用户登录
-chown_uploads=NO      #设定禁止上传文件更改宿主
-nopriv_user=ftptest   #设定支撑Vsftpd服务的宿主用户为新建用户
-ascii_upload_enable=YES
-ascii_download_enable=YES #设定支持ASCII模式的上传和下载功能。
-userlist_enable=YES
-userlist_deny=NO
-```
-最后打开`/etc/vsftpd/user_list`文件，将新建的用户添加到最后一行（**一个用户一行**）
-这种模式下，登录访问的目录就是`/home/新建用户/`
+匿名模式可以让任何人使用ftp服务，比较公开！多适用于共享文件！如果我们想要特定用户使用，就需要使用系统用户登录访问！这种模式，需要我们新建不同用户。(不常用)
 
 ### **虚拟用户配置**
 系统用户模式虽然可以控制访问，但是如果用户过多，就会影响服务器系统的管理，对服务器安全造成威胁！而且我们需要的仅仅是可以使用搭建在服务器的FTP服务而已！ 
@@ -124,27 +108,28 @@ connect_from_port_20=YES
 listen=YES
 listen_port=2121
 
-pasv_enable=YES
-pasv_min_port=30000
-pasv_max_port=31000
-pam_service_name=vsftpd
-tcp_wrappers=YES
-
 connect_timeout=60
 accept_timeout=60
 data_connection_timeout=300
 idle_session_timeout=300
 max_clients=200
 max_per_ip=50
-#
-local_root=/data/web
+
+pam_service_name=vsftpd
+tcp_wrappers=YES
+pasv_enable=YES
+pasv_min_port=30000
+pasv_max_port=31000
+
 chroot_local_user=YES
-chroot_list_enable=YES
-chroot_list_file=/etc/vsftpd/chroot_list
+chroot_list_enable=NO
+#chroot_list_file=/etc/vsftpd/chroot_list
 
 userlist_enable=YES
 userlist_deny=NO
-userlist_file=/etc/vsftpd/user_list
-allow_writeable_chroot=YES
+userlist_file=/etc/vsftpd/user_list #只允许这个文件里的用户登录
+
+user_config_dir=/etc/vsftpd 
+#给这个用户单独其用一个配置文件，配置他的指定活动目录local_root=/home/www_test_com_qa
 
 ```

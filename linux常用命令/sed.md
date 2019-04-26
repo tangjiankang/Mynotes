@@ -12,5 +12,7 @@ cat test.txt | tr ":space:" "\t" >test.csv
 
 sed -i 's/\t/","/g;s/^/"/;s/$/"/;s/\n//g' test.csv
 sed -n "/^user_develop/s/$/,$a/p" authz
+#删除行尾空格和tab
+cat seddlt | sed 's/\[ \\t\]\*$//g'
 ```
 
