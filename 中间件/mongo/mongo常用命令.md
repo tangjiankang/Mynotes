@@ -76,3 +76,39 @@ myapp:SECONDARY> rs.freeze()
 -------
 				   rs.add("ip+端口号")添加节点
 这时使用命令rs.remove("IP+端口")即可移除该节点
+**查询mongo某表索引**
+db.t_tasks_job_T900003.getIndexes()
+**为普通字段添加索引，并且为索引命名**
+db.*集合名*.createIndex( {"*字段名*": 1 },{"**name**":'idx_*字段名*'})
+`db.t_new_tasks_job_T001630.createIndex({"createTime":1.0, "jobType":1.0, "jobState":1.0},{"name":"t_new_tasks_job_c_j_j_1"});`
+**删除索引**
+//删除t3 表中的所有索引
+db.t3.dropIndexes()
+//删除t4 表中的firstname 索引
+db.t4.dropIndex({firstname: 1})
+
+`db.t_new_tasks_job_T001152.dropIndex({"jobType" : 1,"createTime" : 1,"jobState" : 1})`
+```
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "brokerwork.t_tasks_job_T200128"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"tenantId" : 1
+		},
+		"name" : "t_job_t_c",
+		"ns" : "brokerwork.t_tasks_job_T200128"
+	}
+]
+```
+```
+db.t_tasks_job_T200128.dropIndex({tenantId:1})
+```
+

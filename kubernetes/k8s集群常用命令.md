@@ -24,7 +24,7 @@ top 显式资源(cpu/mermory/storage)使用。需要Heapster运行
 cordon 标记节点不可调度
 uncordon 标记节点可调度
 drain 维护期间排除节点
-taint
+taint 增加污点
 ```
 ## 故障诊断和调试命令
 ```

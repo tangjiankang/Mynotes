@@ -1,5 +1,7 @@
+### 1.15后，集群安装方法有变动
 ### 阿里云香港ubuntu16.04安装k8s 1.11.2 HA版
-## **自动生成的证书只能用一年。**
+## **自动生成的证书只能用一年。(有变动)**
+`openssl x509 -in apiserver-etcd-client.crt -text -noout`
 # 架构说明
 由于阿里云Ecs无法安装keepalived，我们采用阿里内部loadbalancer做master的负载，阿里内部loadbalancer无法由vpc内部ecs负载到自己机器，所以还需要另外两台服务器安装haproxy负载到三台master
 ```
@@ -365,12 +367,8 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 #The following resources are required for a generic deployment.
 #集合rbac,default-backend,ingress一体
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
 
-# 注意：官方的 Ingress Controller 有个坑，至少我看了 DaemonSet 方式部署的有这个问题：没有绑定到宿主机 80 端口，也就是说前端 Nginx 没有监听宿主机 80 端口(这还玩个卵啊)；所以需要把配置搞下来自
-己加一下 hostNetwork: true
-# 在这之前加     containers:
-                   - name: nginx-ingress-controller
-                     image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0
 # 验证default-backend
 kubectl get service --all-namespaces
 ingress-nginx   default-http-backend   ClusterIP   10.107.250.86   <none>         80/TCP          2h
@@ -380,6 +378,7 @@ default backend - 404
 # 安装dashboard
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+----------------------------------------无用
 #
 mkdir /root/certs
 cd /root/certs
@@ -392,6 +391,7 @@ openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
 kubectl  delete secrets -n kube-system kubernetes-dashboard-certs
 #导入证书
 kubectl create secret generic kubernetes-dashboard-certs --from-file=/root/certs -n kube-system
+------------------------无用
 #创建管理用户 dashboard需要访问集群的权限，所以使用了clusterrolebinding
 cat > admin-user.yaml<<EOF
 apiVersion: v1

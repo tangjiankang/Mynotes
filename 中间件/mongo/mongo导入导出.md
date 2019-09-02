@@ -1,12 +1,22 @@
-发布的时候需要变更数据，最好备份下
+## **恢复数据**
 -----------------
-
 ①：备份后,新增的数据在恢复时不会被删除。
-
 ②：如果存在同样的数据，恢复的时候会被覆盖掉，不会重复插入。
-
 ③：如果备份后某条数据被update了，恢复的时候备份后倘若某条记录被更新了，无法恢复到备份点的状态
-
+##  **所以在生产环境中，可用备份数据还原到开发环境，再修改对应数据，再插入或修改到生产**
+```
+mongorestore -h127.0.0.1:27017 -d ops-db -c t_module_permission -u ops -p abc123  /root/ops-db/t_module_permission.bson
+mongorestore -h10.47.43.22:27017 -ubrokerwork -po6RJzAF1LELzutEv -dbrokerwork /root/brokerwork20170416/brokerwork
+备注：mongodump 如果不指定 -d 参数，刚会备份整个 MongoDB 实例。
+mongorestore -h IP --port 端口 -u 用户名 -p 密码 -d 数据库 --drop 文件存在路径
+mongorestore -h127.0.0.1 --port 27017 -uadmin -pWAer8R59G6 --authenticationDatabase=admin -dtest --drop /root/test/
+### --drop
+#### 恢复的时候，先删除当前数据(包括索引)，然后恢复备份的数据。就是说，恢复后，备份后添加修改的数据都会被删除，慎用哦！所以使用drop的导入的时候应该bson和json应该一块导入
+```
+直接执行文件,文件名改为js结尾(文件里面是一些执行语句)
+-----------------------------
+mongo 127.0.0.1:27017/msc-db -umsc -pabc123 flag.js
+## **数据备份**
 导出的是文件夹
 `mongodump -h127.0.0.1:27017 -d msc-db -c t_tenant_i18n -u msc -p abc123 --oplog -o msc-db/`
 
@@ -20,22 +30,6 @@ mongodump -h127.0.0.1 --port 20000 --authenticationDatabase=admin --gzip -dfeedw
 mongorestore --gzip  导入压缩的备份
 mongorestore -h10.47.43.22 -urakeback -pGqTEt12E -drcr_t000138 --authenticationDatabase=admin --gzip dump_t000138/rcr_t000138/finish_tickets.bson.gz
 ```
-##  导入(恢复)
-```
-mongorestore -h127.0.0.1:27017 -d ops-db -c t_module_permission -u ops -p abc123  /root/ops-db/t_module_permission.bson
-mongorestore -h10.47.43.22:27017 -ubrokerwork -po6RJzAF1LELzutEv -dbrokerwork /root/brokerwork20170416/brokerwork
-备注：mongodump 如果不指定 -d 参数，刚会备份整个 MongoDB 实例。
-mongorestore -h IP --port 端口 -u 用户名 -p 密码 -d 数据库 --drop 文件存在路径
-mongorestore -h127.0.0.1 --port 27017 -uadmin -pWAer8R59G6 --authenticationDatabase=admin -dtest --drop /root/test/
-
-### --drop
-
-#### 恢复的时候，先删除当前数据(包括索引)，然后恢复备份的数据。就是说，恢复后，备份后添加修改的数据都会被删除，慎用哦！所以使用drop的导入的时候应该bson和json应该一块导入
-```
-直接执行文件,文件名改为js结尾(文件里面是一些执行语句)
------------------------------
-mongo 127.0.0.1:27017/msc-db -umsc -pabc123 flag.js
-
 ## **导出的是文件**
 mongoexport/mongoimport
 将collection导出为json/csv格式数据/将数据导入数据库,mongoimport恢复会直接覆盖这张表
@@ -68,9 +62,9 @@ printjson(cursor);
 ```
 直接打印出结果
 ```
-db.getCollection('t_introduce_hit').find({"tenantId":"T001232"}).forEach(function(customer){
-   print(customer.url);
-});
+db.t_template.find({"tenantId":"T002105","type":"SMS","templateType" : "29298"},{ "id": 1, "title": 1,"templateType":1 }).forEach(function(item){
+        print(JSON.stringify(item));
+ })
 
 db.t_tenant_product.find({"productId":{"$in":["BW","TW"]}}).forEach(function(products){
 	db.t_tenant.find({"_id":products.tenantId}).forEach(function(tenants){
