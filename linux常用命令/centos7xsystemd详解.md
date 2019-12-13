@@ -4,6 +4,18 @@ systemd单元文件放置位置：
 /usr/lib/systemd/system/默认单元文件安装目录
 /run/systemd/system单元运行时创建，这个目录优先于安装目录
 /etc/systemd/system系统管理员创建和管理的单元目录，优先级最高。
+`systemctl list-unit-files | grep enable` 查看开机启动项
+```
+启动服务：systemctl start vsftpd.service
+关闭服务：systemctl stop vsftpd.service
+重启服务：systemctl restart vsftpd.service
+显示服务的状态：systemctl status vsftpd.service
+在开机时启用服务：systemctl enable vsftpd.service
+在开机时禁用服务：systemctl disable vsftpd.service
+查看服务是否开机启动：systemctl is-enabled vsftpd.service
+查看已启动的服务列表：systemctl list-unit-files|grep enabled
+查看启动失败的服务列表：systemctl --failed
+```
 2.systemd 服务管理
 ```
 systemctl常用命令：

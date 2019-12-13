@@ -31,7 +31,7 @@ Insecure Registries:
 Live Restore Enabled: false
 Product License: Community Engine
 ```
-一但Node上有了这个配置，那么K8s就可以通过docker直接访问Private Registry了，这是[K8s文档中与私有镜像仓库交互的第一个方法](http://kubernetes.io/docs/user-guide/images/#using-a-private-registry)。考虑到Pod可以被调度到集群中的任意一个Node上，需要在每个Node上执行上述login操作，或者可以简单地将~/.docker/config.json scp到各个node上的~/.docker目录下。(在测试机上做测试的时候，k8s和gitlab，jenkins，仓库在一台服务器。使用login登录仓库留下的config.json还是k8s无法拉取到代码，又手动拷贝了一份到/var/lib/kubelete/config.json)
+一但Node上有了这个配置，那么K8s就可以通过docker直接访问Private Registry了，这是[K8s文档中与私有镜像仓库交互的第一个方法](http://kubernetes.io/docs/user-guide/images/#using-a-private-registry)。考虑到Pod可以被调度到集群中的任意一个Node上，需要在每个Node上执行上述login操作，**或者可以简单地将**~/.docker/config.json scp到各个node上的~/.docker目录下。(在测试机上做测试的时候，k8s和gitlab，jenkins，仓库在一台服务器。使用login登录仓库留下的config.json还是k8s无法拉取到代码，又手动拷贝了一份到/var/lib/kubelete/config.json)
 #### **方法2：通过kubectl创建docker-registry的secret**
 ```
 Failed to pull image "192.168.0.96:8082/bw-custom:v7.10.1": rpc error: code = Unknown desc = Error 

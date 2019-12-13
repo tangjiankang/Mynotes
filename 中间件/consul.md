@@ -1,3 +1,8 @@
+
+```
+# Consul Join
+The`join`command tells a Consul agent to join an existing cluster. A new Consul agent must join with at least one existing member of a cluster in order to join an existing cluster. After joining that one member, the gossip layer takes over, propagating the updated membership state across the cluster.
+```
 # **consul集群搭建**
 首先去官网现在合适的consul包：https://www.consul.io/downloads.html
 ```
@@ -130,10 +135,14 @@ consul server模式：
 1)server.bat
 ```
 
-## 手动注册服务
+## **手动注册服务**
 可以在客户端或server端注册
 ```
 curl -X PUT -d '{"ID": "bw-report-cronservice-10400","Name": "bw-report-cronservice","Address": "172.31.33.10","Port": 10400,"EnableTagOverride": false,"Check": {"HTTP": "http://172.31.33.10:10400/health","Interval": "10s"}}' http://127.0.0.1:8500/v1/agent/service/register
+```
+
+```
+curl -X PUT -d '{"ID": "bw-realtime-commission-1","Name": "bw-realtime-commission","Address": "172.31.33.17","Port": 30008,"EnableTagOverride": false,"Check": {"HTTP": "http://172.31.33.17:30008/health","Interval": "10s"}}' http://127.0.0.1:8500/v1/agent/service/register
 ```
 ## **删除consul集群中无用的微服务**
 （service-id需在consul集群中查找，例如open-platform-prod-10188）

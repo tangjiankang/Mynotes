@@ -39,6 +39,10 @@ sudo docker build . -t docker-public.lwork.com:5000/${ARTIFACT}:v${releaseNum}
 docker build [选项] <上下文路径/URL/->
 ~~~
 在这里我们指定了最终镜像的名称`-t docker-public.lwork.com:5000/${ARTIFACT}:v${releaseNum}`
+### 上传镜像
+`sudo docker push docker-public.lwork.com:5000/${ARTIFACT}:v${releaseNum}`
+### 删除本地镜像
+`sudo docker rmi docker-public.lwork.com:5000/${ARTIFACT}:v${releaseNum}`
 *****
 ### 镜像构建上下文（Context）
 

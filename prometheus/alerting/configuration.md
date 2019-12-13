@@ -51,17 +51,18 @@ global:
 
 # Files from which custom notification template definitions are read.
 # The last component may use a wildcard matcher, e.g. 'templates/*.tmpl'.
+# 从中读取自定义通知模板定义的文件。 最后一个组件可以使用通配符匹配器
 templates:
   [ - <filepath> ... ]
 
-# The root node of the routing tree.
+# The root node of the routing tree. 路由树的根节点
 route: <route>
 
-# A list of notification receivers.
+# A list of notification receivers. 通知接收者列表.
 receivers:
   - <receiver> ...
 
-# A list of inhibition rules.
+# A list of inhibition rules. 禁止规则列表
 inhibit_rules:
   [ - <inhibit_rule> ... ]
 ```

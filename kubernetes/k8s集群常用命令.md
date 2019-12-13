@@ -58,3 +58,8 @@ help 所有命令帮助
 plugin 运行一个命令行插件
 version 打印客户端和服务版本信息
 ```
+
+
+~~~
+ kubectl cp <some-namespace>/<some-pod>:/tmp/foo /tmp/bar
+~~~
