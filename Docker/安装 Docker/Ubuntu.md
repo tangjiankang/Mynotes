@@ -65,7 +65,16 @@ sudo apt-get install docker-ce
 apt-cache madison docker-ce
 sudo apt-get install docker-ce=18.06.1~ce~3-0~ubuntu
 ```
+### **docker 指定存储路径**
+```
+cat /etc/docker/daemon.json 
 
+{
+
+"graph": "/new-path/docker"
+
+}
+```
 ## **Uninstall Docker CE**
 
 1.  Uninstall the Docker CE package:

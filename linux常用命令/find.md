@@ -28,3 +28,34 @@ grep 查找字段 -Rl路径   列出”路径”中” 查找字段” 的所�
 grep -Rl 'HistoryOrdere5fb4e4c-f38e-476b-902f-2d8ab5a60011' /data/bw-reportfile/ | xargs -i cp {} /root/tony/
 # 查找结果拷贝到指定目录
 ```
+### 参数E，可以传递多个内容 ，使用 | 来分割多个pattern，以此实现OR操作
+`cat zabbix_server.conf | grep  -vE "^#|^$"`
+`grep -ohR -E "//[a-zA-Z0-9\.\/_&=@$%?~#-]*" ./*|sort|uniq -c|grep -E '(lwork|aliyun)'`
+```
+      1 //broker-assets.oss-cn-hangzhou.aliyuncs.com/bw-font/1.3/iconFontPath.js
+      1 //broker-assets.oss-cn-hangzhou.aliyuncs.com/bw-font/2.1/style.css
+      1 //broker-assets.oss-cn-hangzhou.aliyuncs.com/image/country/
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/dll/1.5.8/vendor.css
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/dll/1.5.8/vendor.js
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/files/deposit_template.xlsx
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/FontAwesome.svg#FontAwesome
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/FontAwesome.ttf
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/FontAwesome.woff
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/LeanWork-Icons.eot
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/LeanWork-Icons.eot#iefix
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/LeanWork-Icons.svg#LeanWork-Icons
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/LeanWork-Icons.ttf
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/fonts/LeanWork-Icons.woff
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/bg_center.jpg
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/bg_left.jpg
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/bg_right.jpg
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/chrome.png
+      2 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/help_center.png
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/no-permission.png
+      9 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/images/noData.png
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/v3/index/index.css
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/v3/index/index.js
+      1 //broker-static.oss-cn-hangzhou.aliyuncs.com/dingzhi/T001900/v3/vendor/vendor.js
+```

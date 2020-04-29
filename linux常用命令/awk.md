@@ -8,7 +8,8 @@
 ##### awk -F " " '{print $2}' cnyunwei.log | sort -r | uniq -c | awk '{if($1>1){print $0}}'
 
 awk -F " " '{print $2}' cnyunwei.log | sort -r | uniq -c
-==>> 意思是提取出第二列并过滤重复，且列出重复行数
+**意思是提取出第二列并过滤重复，且列出重复行数**
+
 扩展一下，把以上结果所在行整行内容取出==>> 把上面取出的结果临时存于temp.log文件中，再读取这个文件来取原文件里的整行内容
 
 awk -F " " '{print $2}' cnyunwei.log | sort -r | uniq -c | grep -v "1 " | awk '{print $2}' >> temp.log
@@ -36,7 +37,6 @@ exit 0
 awk -F " " '{print $2}' cnyunwei.log | sort -r | uniq -c | awk '{if($1>1){print $0}}' | awk '{print $2}' | while read output;do grep $output cnyunwei.log; done
 
 
-#### 打印最后一列
-awk '{print $NF}' filename
+
 
 #### cat 1.txt |awk -F, '{print $2,$1}'

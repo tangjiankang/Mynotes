@@ -1,8 +1,10 @@
-### `kubernetes_sd_config` 这个是以角色(role)来定义收集的，比如node,service,pod,endpoints,ingress等等
+### **服务发现**
+### `kubernetes_sd_config` 这个是以角色(role)来定义收集的，Kubernetes SD配置允许从[Kubernetes](https://kubernetes.io/)的RESTAPI中检索scrape目标，并始终与群集状态保持同步。
+凡`<role>`必须是`endpoints`，`service`，`pod`，`node`，或`ingress`。
 `role`可以配置以下类型之一来发现目标：
 ## **node**
 
-该`node`角色发现每个群集节点有一个目标，其地址默认为Kubelet的HTTP端口。目标地址默认为的地址类型顺序Kubernetes节点对象的第一个现有地址`NodeInternalIP`，`NodeExternalIP`，`NodeLegacyHostIP`，和`NodeHostName`。
+1.  `node` `node`角色发现每个群集节点有一个目标，其地址默认为Kubelet的HTTP端口。 目标地址默认为`NodeInternalIP`，`NodeExternalIP`，`NodeLegacyHostIP`和`NodeHostName`的**地址类型顺序中Kubernetes节点对象的第一个现有地址**。
 
 可用元标签：
 
@@ -62,15 +64,14 @@
 可用元标签：
 
 *   `__meta_kubernetes_namespace`：端点对象的命名空间。
-*   `__meta_kubernetes_endpoints_name`：端点对象的名称。
-*   对于直接从端点列表中发现的所有目标（不是从底层pod中另外推断的那些），附加以下标签：
-    *   `__meta_kubernetes_endpoint_hostname`：端点的主机名。
-    *   `__meta_kubernetes_endpoint_node_name`：托管端点的节点的名称。
-    *   `__meta_kubernetes_endpoint_ready`：设置为`true`或`false`为端点的就绪状态。
-    *   `__meta_kubernetes_endpoint_port_name`：端点端口的名称。
-    *   `__meta_kubernetes_endpoint_port_protocol`：端点端口的协议。
-    *   `__meta_kubernetes_endpoint_address_target_kind`：端点地址目标的种类。
-    *   `__meta_kubernetes_endpoint_address_target_name`：端点地址目标的名称。
+*   `__meta_kubernetes_endpoints_name`：端点对象的名称。对于直接从端点列表中发现的所有目标（不是从底层pod中另外推断的那些），附加以下标签：
+*   `__meta_kubernetes_endpoint_hostname`：端点的主机名。
+   *   `__meta_kubernetes_endpoint_node_name`：托管端点的节点的名称。
+   *   `__meta_kubernetes_endpoint_ready`：设置为`true`或`false`为端点的就绪状态。
+   *   `__meta_kubernetes_endpoint_port_name`：端点端口的名称。
+   *   `__meta_kubernetes_endpoint_port_protocol`：端点端口的协议。
+   *   `__meta_kubernetes_endpoint_address_target_kind`：端点地址目标的种类。
+   *   `__meta_kubernetes_endpoint_address_target_name`：端点地址目标的名称。
 *   如果端点属于服务，`role: service`则附加发现的所有标签。
 *   对于由pod支持的所有目标，`role: pod`将附加发现的所有标签。
 
@@ -95,29 +96,36 @@
 # The API server addresses. If left empty, Prometheus is assumed to run inside
 # of the cluster and will discover API servers automatically and use the pod's
 # CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
+# API服务器地址。 如果保留为空，则假定Prometheus在集群内部运行并自动发现API服务器，并在/var/run/secrets/kubernetes.io/serviceaccount/上使用pod的CA证书和不记名令牌文件。
 [ api_server: <host> ]
 
 # The Kubernetes role of entities that should be discovered.
+# 应该被发现的实体的Kubernetes角色。
 role: <role>
 
 # Optional authentication information used to authenticate to the API server.
 # Note that `basic_auth`, `bearer_token` and `bearer_token_file` options are
 # mutually exclusive.
 # password and password_file are mutually exclusive.
+# 用于向API服务器进行身份验证的可选身份验证信息。请注意，`basic_auth`，`bearer_token`和`bearer_token_file`选项是互斥的.password和password_file是互斥的。
 
 # Optional HTTP basic authentication information.
+# 可选的HTTP基本认证信息。
 basic_auth:
   [ username: <string> ]
   [ password: <secret> ]
   [ password_file: <string> ]
 
 # Optional bearer token authentication information.
+# 可选的承载令牌认证信息。
 [ bearer_token: <secret> ]
 
 # Optional bearer token file authentication information.
+# 可选的承载令牌文件认证信息。
 [ bearer_token_file: <filename> ]
 
 # Optional proxy URL.
+# 可选的代理URL。
 [ proxy_url: <string> ]
 
 # TLS configuration.
@@ -125,10 +133,10 @@ tls_config:
   [ <tls_config> ]
 
 # Optional namespace discovery. If omitted, all namespaces are used.
+# 可选命名空间发现 如果省略，则使用所有名称空间。
 namespaces:
   names:
     [ - <string> ]
 ```
-凡`<role>`必须是`endpoints`，`service`，`pod`，`node`，或`ingress`。
 
 有关为Kubernetes配置Prometheus的详细示例，请参阅[此示例Prometheus配置文件](https://github.com/prometheus/prometheus/blob/release-2.12/documentation/examples/prometheus-kubernetes.yml)。

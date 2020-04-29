@@ -6,15 +6,19 @@
 其中`<job_name>`在所有scrape配置中必须是唯一的。
 ```
 # The job name assigned to scraped metrics by default.
+# 默认分配给已抓取指标的job名称。
 job_name: <job_name>
 
 # How frequently to scrape targets from this job.
+# 从job中抓取目标的频率.
 [ scrape_interval: <duration> | default = <global_config.scrape_interval> ]
-# 重写了单个job全局抓取间隔时间
+
 # Per-scrape timeout when scraping this job.
+# 抓取此job时，每次抓取超时时间.
 [ scrape_timeout: <duration> | default = <global_config.scrape_timeout> ]
 
 # The HTTP resource path on which to fetch metrics from targets.
+# 从目标获取指标的HTTP资源路径.
 [ metrics_path: <path> | default = /metrics ]
 
 # honor_labels controls how Prometheus handles conflicts between labels that are
@@ -54,15 +58,18 @@ job_name: <job_name>
 [ honor_timestamps: <boolean> | default = true ]
 
 # Configures the protocol scheme used for requests.
+# 配置用于请求的协议方案.
 [ scheme: <scheme> | default = http ]
 
 # Optional HTTP URL parameters.
+# 可选的HTTP URL参数.
 params:
   [ <string>: [<string>, ...] ]
 
 # Sets the `Authorization` header on every scrape request with the
 # configured username and password.
 # password and password_file are mutually exclusive.
+# 使用配置的用户名和密码在每个scrape请求上设置`Authorization`标头。 password和password_file是互斥的。
 basic_auth:
   [ username: <string> ]
   [ password: <secret> ]
@@ -76,32 +83,55 @@ basic_auth:
 # read from the configured file. It is mutually exclusive with `bearer_token`.
 [ bearer_token_file: /path/to/bearer/token/file ]
 
+###############################################
+###############################################
 # Configures the scrape request's TLS settings.
+# 配置scrape请求的TLS设置.
 tls_config:
   [ <tls_config> ]
+# 用于验证API服务器证书的CA证书。
+[ ca_file: <filename> ]
+# 用于服务器的客户端证书身份验证的证书和密钥文件。
+[ cert_file: <filename> ]
+[ key_file: <filename> ]
+# ServerName扩展名，用于指示服务器的名称。
+# https://tools.ietf.org/html/rfc4366#section-3.1
+[ server_name: <string> ]
+# 禁用服务器证书的验证。
+[ insecure_skip_verify: <boolean> ]
+###############################################
+###############################################
+
 
 # Optional proxy URL.
+# 可选的代理URL.
 [ proxy_url: <string> ]
 
 # List of Kubernetes service discovery configurations.
+# Kubernetes服务发现配置列表。
 kubernetes_sd_configs:
   [ - <kubernetes_sd_config> ... ]
 
 # List of labeled statically configured targets for this job.
+# 此job的标记静态配置目标列表。
 static_configs:
   [ - <static_config> ... ]
 
 # List of target relabel configurations.对服务发现的目标进行重新标记
+# 目标重新标记配置列表。
 relabel_configs:
   [ - <relabel_config> ... ]
 
 # List of metric relabel configurations.抓取目标后，被保存之前。可以确定哪些指标需要保存或丢弃
+# 度量标准重新配置列表。
 metric_relabel_configs:
   [ - <relabel_config> ... ]
 
 # Per-scrape limit on number of scraped samples that will be accepted.
 # If more than this number of samples are present after metric relabelling
 # the entire scrape will be treated as failed. 0 means no limit.
+# 对每个将被接受的样本数量的每次抓取限制。
+# 如果在度量重新标记后存在超过此数量的样本，则整个抓取将被视为失败。 0表示没有限制。
 [ sample_limit: <int> | default = 0 ]
 
 #还有一些其他配置如：自动发现下列服务

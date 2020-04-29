@@ -47,6 +47,8 @@ convert 不同的API版本之间转换配置文件。YAML和JSON格式都接受
 ## 设置命令
 ```
 label 更新资源上的标签
+kubectl label nodes <node-name> <label-key>=<label-value>  #打标签
+kubectl get node --show-labels
 annotate在一个或多个资源上更新注释
 completion 用于实现kubectl工具自动补全
 ```
@@ -59,7 +61,8 @@ plugin 运行一个命令行插件
 version 打印客户端和服务版本信息
 ```
 
-
+## 从容器中拷贝文件到宿主机
 ~~~
- kubectl cp <some-namespace>/<some-pod>:/tmp/foo /tmp/bar
+ kubectl cp  <some-namespace>/<some-pod>:/tmp/foo /tmp/bar
+kubectl cp crm/inner-bw-pic-748cfd5c67-rxftl:/home/crm/inner-bw-pic.jar inner-bw-pic.jar
 ~~~

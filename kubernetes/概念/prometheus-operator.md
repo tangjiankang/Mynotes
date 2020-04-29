@@ -1,5 +1,5 @@
 ### Prometheus Operator
-
+[https://github.com/coreos/prometheus-operator](https://github.com/coreos/prometheus-operator)
 这篇文章的主角是 Prometheus Operator，由于 Prometheus 本身没有提供管理配置的 API 接口（尤其是管理监控目标和管理警报规则），也没有提供好用的多实例管理手段，因此这一块往往要自己写一些代码或脚本。但假如你还没有写这些代码，那就可以先看一下 Prometheus Operator，它很好地解决了 Prometheus 不好管理的问题。  
   
 

@@ -358,6 +358,7 @@ kubectl get nodes
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 # 安装ingress-nginx
+官网 https://github.com/kubernetes/ingress-nginx/blob/master/docs/deploy/index.md
 ```
 # kubectl get po -n ingress-nginx
 # kubectl logs -n ingress-nginx nginx-ingress-controller-6d466b5c9d-g9c62

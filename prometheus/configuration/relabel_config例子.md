@@ -44,11 +44,11 @@ job="kubernetes-service-endpoints"
       kubernetes_sd_configs:
       - role: endpoints
       relabel_configs:
-# 只匹配__meta_kubernetes_service_annotation_prometheus_io_scrape=true的endpoint
       - action: keep
         regex: true
         source_labels:
         - __meta_kubernetes_service_annotation_prometheus_io_scrape
+# 只匹配__meta_kubernetes_service_annotation_prometheus_io_scrape=true的endpoint
 # 如果有__meta_kubernetes_service_annotation_prometheus_io_scheme，且正则匹配(https?)，则将__scheme__修改为__meta_kubernetes_service_annotation_prometheus_io_scheme指定的值
       - action: replace
         regex: (https?)

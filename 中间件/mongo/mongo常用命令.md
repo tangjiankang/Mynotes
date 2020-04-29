@@ -46,7 +46,10 @@ db.createUser({user:"zabbixmonitor",pwd:"leanwork2018",roles:["clusterMonitor"]}
 ```
 ### **因为mongodb默认是从主节点读写数据的，副本节点上不允许读，需要设置副本节点可以读**
 `db.getMongo().setSlaveOk();`
-
+### **查询最大连接数**
+`db.serverStatus().connections;`
+Current+available
+mongod或mongos支持的最大并发连接数受操作系统ulimit(可通过/etc/security/limits.conf文件来配置)和服务端maxConn参数限制，取其中较小值，这两个参数均可调整。
 **副本集状态**
 -----
 rs.status();
@@ -111,4 +114,4 @@ db.t4.dropIndex({firstname: 1})
 ```
 db.t_tasks_job_T200128.dropIndex({tenantId:1})
 ```
-
+## **mongo必需副本集或分片才能支持事务**

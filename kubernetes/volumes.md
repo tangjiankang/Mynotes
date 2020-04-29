@@ -16,7 +16,23 @@ kubectl explain pods.spec.env
                 （2）通过entrypoint脚本来预处理变量为配置文件中的配置信息
         4、存储卷
 ```
-## configmap-secret，两种特殊的存储卷，给我们管理员或用户提供了从集群外部向pod内部的应用注入配置信息
+## **hostPath**
+`hostPath`卷能将主机节点文件系统上的文件或目录挂载到您的 Pod 中。 虽然这不是大多数 Pod 需要的，但是它为一些应用程序提供了强大的逃生舱。
+
+例如，`hostPath`的一些用法有：
+
+*   运行一个需要访问 Docker 引擎内部机制的容器；请使用`hostPath`挂载`/var/lib/docker`路径。
+*   在容器中运行 cAdvisor 时，以`hostPath`方式挂载`/sys`。
+*   允许 Pod 指定给定的`hostPath`在运行 Pod 之前是否应该存在，是否应该创建以及应该以什么方式存在。
+
+除了必需的`path`属性之外，用户可以选择性地为`hostPath`卷指定`type`。
+
+支持的`type`值如下：
+**DirectoryOrCreate**如果在给定路径上什么都不存在，那么将根据需要创建空目录，权限设置为 0755，具有与 Kubelet 相同的组和所有权。
+
+**FileOrCreate**如果在给定路径上什么都不存在，那么将在那里根据需要创建空文件，权限设置为 0644，具有与 Kubelet 相同的组和所有权。
+## configmap-secret
+两种特殊的存储卷，给我们管理员或用户提供了从集群外部向pod内部的应用注入配置信息
 ## 开发，QA，生产环境可能所使用的内存或cpu各不相同，因此得做3个镜像，这样太麻烦，因此可以用配置中心，起三份配置文件
 ## k8s也面临同样问题
 因此我们不把配置文件写死在镜像中，启用configmap
@@ -118,7 +134,9 @@ spec:
 ```
 ## 但是 pod 重启后， 如果漂移到其他节点， 那挂载的数据就会丢失，如果要求数据不能丢失，可以配合 nodeselector 使用。 即强制 pod 只运行在某个节点，重启或删除重建后数据不会丢失。
 测试 kubectl exec -it pod-cm-2 -- /bin/sh
-
+### 更新 ConfigMap 后：
+*   使用该 ConfigMap 挂载的 Env**不会**同步更新
+*   使用该 ConfigMap 挂载的 Volume 中的数据需要一段时间（实测大概10秒）才能同步更新
 **2.secret**私钥或证书放在secret
 kubectl create secret --help
 ```

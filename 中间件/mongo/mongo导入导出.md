@@ -82,3 +82,9 @@ db.t_tenant_product.find({"productId":{"$in":["BW","TW"]}}).forEach(function(pro
 		});
 });
 ```
+# 
+```
+db.t_form_field.find({'tenantId':'T000000',"sysDefault" : true,'message.vi-VN':{$exists:true}}).forEach(function(v){
+    db.t_form_field.update({'tenantId':'T001630','message.vi-VN':{$exists:false},'formId':v.formId,'fieldId':v.fieldId},{$set:{'message':v.message}});
+})
+```

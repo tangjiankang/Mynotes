@@ -24,12 +24,11 @@ systemctl常用命令：
 重启服务 systemctl restar tname.service
 仅当服务运行的时候，重启服务 systemctl try-restart name.service
 重新加载服务配置文件 systemctl relaod name.service
-检查服务运作状态 systemctl status name.service 或者 systemctl is-active\ name.service
+检查服务运作状态 systemctl status name.service 或者 systemctl is-active name.service
 展示所有服务状态详细信息 systemctl list-units--type service --all
 允许服务开机启动 systemctl enable name.service
 禁止服务开机启动 systemclt disable name.service
-检查服务开机启动状态 systemctl status name.service 或者systemctl\
-is-enabled name.service
+检查服务开机启动状态 systemctl status name.service 或者systemctl is-enabled name.service
 列出所有服务并且检查是否开机启动 systemctl list-unit-files --type service3.服务详细信息查看
 使用如下命令列出服务：
 systemctl list-units --type service

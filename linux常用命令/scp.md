@@ -4,12 +4,15 @@
 scp local_file user@host:/dir
 ~~~
 
-## 2.scp复制文件到指定端口
+## 2.scp复制文件使用指定端口
 
 scp默认连接的远端主机22端口，如果ssh不是使用标准的22端口（以16022为例）则使用-P（P大写）指定：
 
 ~~~
+# 本地拷贝到远程
 scp -P 16022 local_file user@host:/dir
+# 远程拷贝到本地
+scp -P 38529 10.28.188.87:/root/demo_account.sql .
 ~~~
 
 ## 3.从远端主机将文件复制到另一台远端主机
