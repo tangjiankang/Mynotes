@@ -1,3 +1,8 @@
+### **ubuntu 16.04 install jdk8**
+```
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+```
 ### **ubuntu 18.04 install jdk8**
 `sudo apt install openjdk-8-jdk`
 

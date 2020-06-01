@@ -137,13 +137,18 @@ echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee 
 sudo apt update && sudo apt install logstash
 ```
 ### 修改配置文件
+`deploy.spec.template.spec.containers.env`下面加一条
+```
+        - name: aliyun_logs_crm # crm这个名称空间要正确填写
+          value: stdout
+```
 ```
 root@cn-office-bw-dev-msc1:/etc/logstash# cat conf.d/logstash.conf 
 input {   
     kafka {
         bootstrap_servers => ["192.168.60.90:9092"] # 注意这里配置的kafka的broker地址不是zk的地址
         group_id => "logstash" # 自定义groupid 
-        topics => ["crm-private"]  # kafka topic 名称 
+        topics => ["crm-private"]  # kafka topic 名称 ,待收集日志服务的namespace，可以多个，以逗号分开。
         consumer_threads => 1 
         decorate_events => true
         codec => "json"

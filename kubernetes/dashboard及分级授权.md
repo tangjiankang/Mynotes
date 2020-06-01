@@ -1,3 +1,4 @@
+**在开启了 TLS 的集群中，每当与集群交互的时候少不了的是身份认证，使用 kubeconfig（即证书） 和 token 两种认证方式是最简单也最通用的认证方式**
 1、部署:
 `kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-
 flannel.yml`

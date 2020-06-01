@@ -2,8 +2,9 @@
 SAN存储区域网络：iSCSI，
 NAS网络xx存储：nfs，cifs
 ```
-分布式存储：glusterfs，rbd，cephfs
-云存储：EBS，Azure Disk，阿里云(运行在对应平台上，可以直接购买使用)。使用公有云存储关键数据还是应该加一个备份。
+官网：https://kubernetes.io/zh/docs/concepts/storage/volumes/
+https://kubernetes.io/zh/docs/tasks/configure-pod-container/configure-pod-configmap/
+**容器以 [subPath]卷挂载方式使用 ConfigMap 时，将无法接收 ConfigMap 的更新。**
 
 kubectl explain pods.spec.env
 ```

@@ -7,6 +7,7 @@
 ```
 mongorestore -h127.0.0.1:27017 -d ops-db -c t_module_permission -u ops -p abc123  /root/ops-db/t_module_permission.bson
 mongorestore -h10.47.43.22:27017 -ubrokerwork -po6RJzAF1LELzutEv -dbrokerwork /root/brokerwork20170416/brokerwork
+load 在mongodb命令行下可以直接导入一个文件 load("1.js")
 备注：mongodump 如果不指定 -d 参数，刚会备份整个 MongoDB 实例。
 mongorestore -h IP --port 端口 -u 用户名 -p 密码 -d 数据库 --drop 文件存在路径
 mongorestore -h127.0.0.1 --port 27017 -uadmin -pWAer8R59G6 --authenticationDatabase=admin -dtest --drop /root/test/

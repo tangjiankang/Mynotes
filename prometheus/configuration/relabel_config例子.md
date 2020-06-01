@@ -37,7 +37,7 @@ __metrics_path__="/metrics"
 __scheme__="http"
 job="kubernetes-service-endpoints"
 ```
-### 通过kubernetes_sd_configs发现机制，通过apiserver的接口列出当前k8s集群中endpoints列表，匹配到打了prometheus_io_scrape: true annotation的endpoint，从匹配到的endpoint列表中每个endpoint抓取该endpoint暴露的监控指标
+### 通过kubernetes_sd_configs发现机制，通过apiserver的接口列出当前k8s集群中endpoints列表
 经过下面的relabel规则后：
 ```
     - job_name: kubernetes-service-endpoints
@@ -49,6 +49,7 @@ job="kubernetes-service-endpoints"
         source_labels:
         - __meta_kubernetes_service_annotation_prometheus_io_scrape
 # 只匹配__meta_kubernetes_service_annotation_prometheus_io_scrape=true的endpoint
+# 然后进行下一步
 # 如果有__meta_kubernetes_service_annotation_prometheus_io_scheme，且正则匹配(https?)，则将__scheme__修改为__meta_kubernetes_service_annotation_prometheus_io_scheme指定的值
       - action: replace
         regex: (https?)
@@ -72,12 +73,12 @@ job="kubernetes-service-endpoints"
 # 如果label名称正则匹配__meta_kubernetes_service_label_(.+)，则设置相应的label
       - action: labelmap
         regex: __meta_kubernetes_service_label_(.+)
- # 设置kubernetes_namespace为__meta_kubernetes_namespace指定的值
+ # 设置kubernetes_namespace为__meta_kubernetes_namespace的值
       - action: replace
         source_labels:
         - __meta_kubernetes_namespace
         target_label: kubernetes_namespace
-# 设置kubernetes_name为__meta_kubernetes_service_name指定的值
+# 设置kubernetes_name为__meta_kubernetes_service_name的值
       - action: replace
         source_labels:
         - __meta_kubernetes_service_name

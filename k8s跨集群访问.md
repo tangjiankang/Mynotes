@@ -1,6 +1,8 @@
 引用：https://jimmysong.io/kubernetes-handbook/guide/authenticate-across-clusters-kubeconfig.html
 Kubernetes 的认证方式对于不同的人来说可能有所不同。
 
+**在开启了 TLS 的集群中，每当与集群交互的时候少不了的是身份认证，使用 kubeconfig（即证书） 和 token 两种认证方式是最简单也最通用的认证方式**
+
 *   运行 kubelet 可能有一种认证方式（即证书）。
 *   用户可能有不同的认证方式（即令牌）。
 *   管理员可能具有他们为个人用户提供的证书列表。

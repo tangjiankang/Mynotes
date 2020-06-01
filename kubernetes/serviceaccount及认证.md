@@ -1,4 +1,6 @@
 官网： https://kubernetes.io/zh/docs/reference/access-authn-authz/rbac/
+https://kubernetes.io/zh/docs/concepts/cluster-administration/certificates/
+**在开启了 TLS 的集群中，每当与集群交互的时候少不了的是身份认证，使用 kubeconfig（即证书） 和 token 两种认证方式是最简单也最通用的认证方式**
 Kubernetes: 认证、授权
 ```
 API server:

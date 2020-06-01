@@ -3,7 +3,7 @@ Prometheus可以从Kubernetes集群的各个组件中采集数据，比如kubele
 ### 
 Exporter是Prometheus的一类数据采集组件的总称。它负责从目标处搜集数据，并将其转化为Prometheus支持的格式。与传统的数据采集组件不同的是，它并不向中央服务器发送数据，而是等待中央服务器主动前来抓取，默认的抓取地址为http://CURRENT_IP:9100/metrics
 ### 
-node-exporter用于采集服务器层面的运行指标，包括机器的loadavg、filesystem、meminfo等基础监控，类似于传统主机监控维度的zabbix-agent
+node-exporter用于采集服务器层面的运行指标，包括机器的loadavg、filesystem、meminfo（cpu 负载，内存使用，磁盘 IO，网络）等基础监控，类似于传统主机监控维度的zabbix-agent
 node-export由prometheus官方提供、维护，不会捆绑安装，但基本上是必备的exporter
 ### **部署**
 node-exporter.yaml文件：
